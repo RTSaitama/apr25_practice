@@ -6,7 +6,7 @@ import productsFromServer from './api/products';
 import { Block } from './components/Block';
 import { TableContainer } from './components/TableContainer';
 
-//  3 в 1 аррей
+// 3 в 1 аррей
 export const productsWithCategories = productsFromServer.map(product => {
   const category = categoriesFromServer.find(
     categoriya => categoriya.id === product.categoryId,
@@ -34,7 +34,9 @@ export const productsWithCategories = productsFromServer.map(product => {
 export const App = () => {
   const [searchValue, setSearchValue] = useState('');
   const [selectedUser, setSelectedUser] = useState(null);
-  const [categorySelected, setCategorySelected] = useState('');
+  const [categorySelected, setCategorySelected] = useState([]);
+  const [sortBy, setSortBy] = useState('');
+  const [reversed, setReversed] = useState(false);
 
   const filteredProducts = productsWithCategories.filter(product => {
     const productName = product.name.toLowerCase();
@@ -43,7 +45,9 @@ export const App = () => {
   });
 
   const filteredFully = selectedUser
-    ? filteredProducts.filter(product => product.owner.id === selectedUser.id)
+    ? filteredProducts.filter(
+      product => product.owner.id === selectedUser.id,
+      )
     : filteredProducts;
 
   const handleSelectUser = user => {
@@ -54,9 +58,34 @@ export const App = () => {
     }
   };
 
-  const categoryFiltered = categorySelected
-    ? filteredFully.filter(product => product.categoryId === categorySelected)
+  const categoryFiltered = categorySelected?.length
+    ? filteredFully.filter(product =>
+      categorySelected.some(cat => cat.id === product.category.id)
+      )
     : filteredFully;
+
+  const sorted = [...categoryFiltered].sort((a, b) => {
+    let result = 0;
+
+    switch (sortBy) {
+      case 'ID':
+        result = a.id - b.id;
+        break;
+      case 'Product':
+        result = a.name.localeCompare(b.name);
+        break;
+      case 'Category':
+        result = a.category.title.localeCompare(b.category.title);
+        break;
+      case 'User':
+        result = a.owner.name.localeCompare(b.owner.name);
+        break;
+      default:
+        break;
+    }
+
+    return reversed ? -result : result;
+  });
 
   return (
     <div className="section">
@@ -73,9 +102,14 @@ export const App = () => {
         />
 
         <TableContainer
-          productsWithCategories={categoryFiltered}
+          productsWithCategories={sorted}
           categorySelected={categorySelected}
           columns={COLUMNS}
+          sortBy={sortBy}
+          setSortBy={setSortBy}
+          sorted={sorted}
+          reversed={reversed}
+          setReversed={setReversed}
         />
       </div>
     </div>

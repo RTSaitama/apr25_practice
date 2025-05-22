@@ -7,7 +7,6 @@ export const Block = ({
   setSearchValue,
   selectedUser,
   handleSelectUser,
-  сategorySelected,
   setCategorySelected,
 }) => {
   return (
@@ -53,15 +52,16 @@ export const Block = ({
             <span className="icon is-left">
               <i className="fas fa-search" aria-hidden="true" />
             </span>
-
             {searchValue && (
-              <button
-                type="button"
-                className="close-btn"
-                onClick={() => setSearchValue('')}
-              >
-                <i className="fas fa-times-circle" aria-hidden="true" />
-              </button>
+              <span className="icon is-right">
+                {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+                <button
+                  onClick={() => setSearchValue('')}
+                  data-cy="ClearButton"
+                  type="button"
+                  className="delete"
+                />
+              </span>
             )}
           </p>
         </div>
@@ -71,7 +71,8 @@ export const Block = ({
             href="#/"
             data-cy="AllCategories"
             className="button is-success mr-6 is-outlined"
-            onClick={() => setCategorySelected(null)}
+            // onClick={() => setCategorySelected(null)}
+            onClick={() => setCategorySelected([])}
           >
             All
           </a>
@@ -82,31 +83,28 @@ export const Block = ({
                 data-cy="Category"
                 className="button mr-2 my-1"
                 href="#/"
+                //    onClick={() => {
+                // setCategorySelected(prev => {
+                //   const isSelected = prev.some(
+                //     item => item.id === category.id);
                 onClick={() => {
-                  if (сategorySelected !== category.id) {
-                    setCategorySelected(category.id);
-                  }
+                  setCategorySelected(prev => {
+                    const isSelected = prev?.some(
+                      item => item.id === category.id,
+                    );
+
+                    if (isSelected) {
+                      return prev.filter(item => item.id !== category.id);
+                    }
+
+                    return [...prev, category];
+                  });
                 }}
               >
                 {category.title}
               </a>
             );
           })}
-        </div>
-
-        <div className="panel-block">
-          <a
-            data-cy="ResetAllButton"
-            href="#/"
-            className="button is-link is-fullwidth"
-            onClick={() => {
-              setCategorySelected(null);
-              setSearchValue('');
-              handleSelectUser('all');
-            }}
-          >
-            Reset all filters
-          </a>
         </div>
       </nav>
     </div>

@@ -1,6 +1,12 @@
 import React from 'react';
 
-export const TableContainer = ({ productsWithCategories, columns }) => {
+export const TableContainer = ({
+  productsWithCategories,
+  columns,
+  sortBy,
+  setSortBy,
+  setReversed,
+}) => {
   return (
     <div className="box table-container">
       {productsWithCategories.length === 0 && (
@@ -19,7 +25,16 @@ export const TableContainer = ({ productsWithCategories, columns }) => {
                   <span className="is-flex is-flex-wrap-nowrap">
                     {column}
 
-                    <a href="#/">
+                    <a
+                      href="#/"
+                      onClick={() => {
+                        if (column !== sortBy) {
+                          setSortBy(column);
+                        } else {
+                          setReversed(prev => !prev);
+                        }
+                      }}
+                    >
                       <span className="icon">
                         <i data-cy="SortIcon" className="fas fa-sort" />
                       </span>
