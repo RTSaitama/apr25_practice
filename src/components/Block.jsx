@@ -55,7 +55,15 @@ export const Block = ({
             {searchValue && (
               <span
                 className="icon is-right"
-                onClick={() => setSearchValue('')} 
+                onClick={() => setSearchValue('')}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    setSearchValue('');
+                  }
+                }}
+                role="button"
+                tabIndex="0"
+                aria-label="Clear search"
               >
                 <i className="fas fa-times-circle" aria-hidden="true" />
               </span>

@@ -4,14 +4,13 @@ import usersFromServer from './api/users';
 import categoriesFromServer from './api/categories';
 import productsFromServer from './api/products';
 import { Block } from './components/Block';
-import { TableContainer } from './components/TableContainer/TableContainer';
+import { TableContainer } from './components/TableContainer';
 
 //  3 в 1 аррей
 export const productsWithCategories = productsFromServer.map(product => {
   const category = categoriesFromServer.find(
-    category => category.id === product.categoryId,
+    categoriya => categoriya.id === product.categoryId,
   );
-
 
   const user = usersFromServer.find(
     userFound => userFound.id === category.ownerId,
@@ -36,13 +35,11 @@ export const App = () => {
   const [searchValue, setSearchValue] = useState('');
   const [selectedUser, setSelectedUser] = useState(null);
 
-
   const filteredProducts = productsWithCategories.filter(product => {
     const productName = product.name.toLowerCase();
 
     return productName.includes(searchValue.toLowerCase());
-  })
-
+  });
 
   const filteredFully = selectedUser
     ? filteredProducts.filter(product => product.owner.id === selectedUser.id)
@@ -69,7 +66,7 @@ export const App = () => {
         />
 
         <TableContainer
-          productsWithCategories={filteredFully} 
+          productsWithCategories={filteredFully}
           columns={COLUMNS}
         />
       </div>
