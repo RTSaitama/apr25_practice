@@ -106,6 +106,11 @@ export const Block = ({
             data-cy="ResetAllButton"
             href="#/"
             className="button is-link is-fullwidth"
+            onClick={() => {
+              setCategorySelected(null);
+              setSearchValue('');
+              handleSelectUser('all');
+            }}
           >
             Reset all filters
           </a>
