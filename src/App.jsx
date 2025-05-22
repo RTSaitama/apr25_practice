@@ -34,6 +34,7 @@ export const productsWithCategories = productsFromServer.map(product => {
 export const App = () => {
   const [searchValue, setSearchValue] = useState('');
   const [selectedUser, setSelectedUser] = useState(null);
+  const [categorySelected, setCategorySelected] = useState(null);
 
   const filteredProducts = productsWithCategories.filter(product => {
     const productName = product.name.toLowerCase();
@@ -53,6 +54,10 @@ export const App = () => {
     }
   };
 
+  const categoryFiltered = categorySelected
+    ? filteredFully.filter(product => product.categoryId === categorySelected)
+    : filteredFully;
+
   return (
     <div className="section">
       <div className="container">
@@ -63,10 +68,13 @@ export const App = () => {
           setSearchValue={setSearchValue}
           selectedUser={selectedUser}
           handleSelectUser={handleSelectUser}
+          categorySelected={categorySelected}
+          setCategorySelected={setCategorySelected}
         />
 
         <TableContainer
-          productsWithCategories={filteredFully}
+          productsWithCategories={categoryFiltered}
+          categorySelected={categorySelected}
           columns={COLUMNS}
         />
       </div>

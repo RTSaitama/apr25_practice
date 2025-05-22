@@ -7,6 +7,8 @@ export const Block = ({
   setSearchValue,
   selectedUser,
   handleSelectUser,
+  сategorySelected,
+  setCategorySelected,
 }) => {
   return (
     <div className="block">
@@ -76,6 +78,7 @@ export const Block = ({
             href="#/"
             data-cy="AllCategories"
             className="button is-success mr-6 is-outlined"
+            onClick={() => setCategorySelected(null)}
           >
             All
           </a>
@@ -86,6 +89,11 @@ export const Block = ({
                 data-cy="Category"
                 className="button mr-2 my-1"
                 href="#/"
+                onClick={() => {
+                  if (сategorySelected !== category.id) {
+                    setCategorySelected(category.id);
+                  }
+                }}
               >
                 {category.title}
               </a>
