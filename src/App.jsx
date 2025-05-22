@@ -34,7 +34,7 @@ export const productsWithCategories = productsFromServer.map(product => {
 export const App = () => {
   const [searchValue, setSearchValue] = useState('');
   const [selectedUser, setSelectedUser] = useState(null);
-  const [categorySelected, setCategorySelected] = useState(null);
+  const [categorySelected, setCategorySelected] = useState('');
 
   const filteredProducts = productsWithCategories.filter(product => {
     const productName = product.name.toLowerCase();

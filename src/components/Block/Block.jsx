@@ -1,6 +1,6 @@
 import React from 'react';
-import categories from '../api/categories';
-import users from '../api/users';
+import categories from '../../api/categories';
+import users from '../../api/users';
 
 export const Block = ({
   searchValue,
@@ -44,7 +44,7 @@ export const Block = ({
             <input
               data-cy="SearchField"
               type="text"
-              className="input"
+              className="input input-with-x"
               placeholder="Search"
               value={searchValue}
               onChange={ev => setSearchValue(ev.target.value)}
@@ -55,20 +55,13 @@ export const Block = ({
             </span>
 
             {searchValue && (
-              <span
-                className="icon is-right"
+              <button
+                type="button"
+                className="close-btn"
                 onClick={() => setSearchValue('')}
-                onKeyDown={e => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    setSearchValue('');
-                  }
-                }}
-                role="button"
-                tabIndex="0"
-                aria-label="Clear search"
               >
                 <i className="fas fa-times-circle" aria-hidden="true" />
-              </span>
+              </button>
             )}
           </p>
         </div>
